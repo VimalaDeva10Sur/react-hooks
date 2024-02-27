@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 const Counter = () => {
-  // useState returns, State Variable and Setter function
+  // useState returns, State Variable and State Setter function
   const [count, setCount] = useState(0);
 
-  // Should call the setter function only under the protective circumstances
+  // Should not call the setter function at the render level
   // setCount(count + 1);
 
   const handleCounter = () => {
@@ -13,7 +13,7 @@ const Counter = () => {
     // 3. Commit that changes to the Real DOM
     setCount((prevState) => prevState + 1);
 
-    // Setter function is the async
+    // Setter function is the async type function
     console.log(count); // Prev Count value
   };
 

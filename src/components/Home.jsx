@@ -13,6 +13,9 @@ const Home = () => {
         <li>
           <Link to={"/user-form"}>Use Reducer</Link>
         </li>
+        <li>
+          <Link to={"/use-ref"}>Use ref</Link>
+        </li>
       </ul>
     </div>
   );

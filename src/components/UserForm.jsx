@@ -23,7 +23,7 @@ const UserForm = () => {
     email: "",
   });
 
-  // Provides the unique id to refer the elements aria attributes
+  // Provides the unique id to refer the elements (can be used for id selectors)
   const nameId = useId();
 
   const handleSubmit = (e) => {

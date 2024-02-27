@@ -3,12 +3,16 @@ import TodoService from "../services/TodoServices";
 import TodoItem from "./TodoItem";
 import { Link } from "react-router-dom";
 import UserSelect from "./UserSelect";
+import { useTodos } from "../hooks/useTodos";
 
 const TodoList = () => {
-  const [todos, setTodos] = useState([]);
-  const [error, setError] = useState();
+  // const [todos, setTodos] = useState([]);
+  // const [error, setError] = useState();
+  // const [loading, setLoading] = useState(null);
   const [user, setUser] = useState(1);
+  const { error, fetchTodos, todos, loading } = useTodos();
 
+  // Used to reference the value thats not needed for rendering or the Real DOM elements.
   const selectRef = useRef();
 
   console.log("Some console");
@@ -17,17 +21,18 @@ const TodoList = () => {
     console.log("%c Effect without dependencies", "color:red");
   });
 
-  const fetchTodos = async (userId = 1) => {
-    try {
-      const resp = await new TodoService().fetchTodosWithUserId(+userId);
+  // const fetchTodos = async (userId = 1) => {
+  // try {
+  //   setLoading(true);
+  //   const resp = await new TodoService().fetchTodosWithUserId(+userId);
 
-      setTodos(resp.data);
-      // localStorage.setItem("todolist", JSON.stringify(resp.data));
-    } catch (error) {
-      setTodos([]);
-      setError("Errorś");
-    }
-  };
+  //   setLoading(false);
+  //   setTodos(resp.data);
+  // } catch (error) {
+  //   setLoading(false);
+  //   setError("Errorś");
+  // }
+  // };
 
   const handleKeyPress = () => {
     console.log("key enterd");
@@ -37,6 +42,7 @@ const TodoList = () => {
     console.log(
       "Effect with dependencies, which will be executed only if there is an change in dependencies"
     );
+
     if (todos) {
       fetchTodos(user);
     }
@@ -44,13 +50,14 @@ const TodoList = () => {
     document.addEventListener("keypress", handleKeyPress);
 
     return () => {
-      // Will be executed on the time of unmounting of component
+      // Will be executed at the time of unmounting of component
       console.log("Cleanup function");
       document.removeEventListener("keypress", handleKeyPress);
     };
   }, [user]);
 
   useEffect(() => {
+    // Executed on the time of mounting the component
     console.log("Effect with empty dependencies");
 
     fetchTodos();
@@ -71,12 +78,12 @@ const TodoList = () => {
     return <div>Error occured</div>;
   }
 
-  if (!todos.length) {
-    return <div>Please add todos</div>;
+  if (loading) {
+    return <div>Loading</div>;
   }
 
   return (
-    <div>
+    <>
       <Link to={"/use-state"}>Go Back</Link>
       <h1>Active User: {user}</h1>
       <UserSelect onChange={handleChange} ref={selectRef} />
@@ -89,7 +96,7 @@ const TodoList = () => {
           />
         ))}
       </ul>
-    </div>
+    </>
   );
 };
 
